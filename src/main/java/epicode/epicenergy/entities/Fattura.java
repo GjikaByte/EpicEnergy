@@ -11,11 +11,10 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "fatture")
 public class Fattura {
     @UUID
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Setter(AccessLevel.NONE)
     private UUID idFattura;
     private LocalDate data;
@@ -25,4 +24,11 @@ public class Fattura {
     private StatoFattura statoFattura;
     @ManyToOne
     private Cliente clienteId;
-}
+
+    public Fattura(LocalDate data, Double importo, Long numeroFattura, StatoFattura statoFattura, Cliente clienteId) {
+    this.data = data;
+    this.importo = importo;
+    this.numeroFattura = numeroFattura;
+    this.statoFattura = statoFattura;
+    this.clienteId = clienteId;
+}}
