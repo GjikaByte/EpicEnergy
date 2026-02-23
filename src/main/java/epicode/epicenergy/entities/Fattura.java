@@ -2,9 +2,9 @@ package epicode.epicenergy.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.validator.constraints.UUID;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Getter
