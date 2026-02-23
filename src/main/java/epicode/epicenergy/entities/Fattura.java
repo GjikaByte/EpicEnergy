@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Table(name = "fatture")
 public class Fattura {
-    @UUID
+    @Id
     @GeneratedValue
     @Setter(AccessLevel.NONE)
     private UUID idFattura;
