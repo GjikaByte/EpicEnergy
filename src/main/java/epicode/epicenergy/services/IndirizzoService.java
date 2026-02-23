@@ -2,9 +2,11 @@ package epicode.epicenergy.services;
 
 
 import epicode.epicenergy.DTOs.IndirizzoDTO;
+import epicode.epicenergy.entities.Cliente;
 import epicode.epicenergy.entities.Indirizzo;
 import epicode.epicenergy.exceptions.BadRequestException;
 import epicode.epicenergy.exceptions.NotFoundException;
+import epicode.epicenergy.repositories.ClienteRepository;
 import epicode.epicenergy.repositories.IndirizzoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +43,7 @@ public class IndirizzoService {
                 });
 
         Cliente cliente = clienteRepository.findById(payload.getClienteId())
-                .orElseThrow(() -> new NotFoundException(payload.));
+                .orElseThrow(() -> new NotFoundException(payload.getClienteId()));
 
 
         Indirizzo newIndirizzo = new Indirizzo(payload.getVia(),payload.getCivico(),payload.getLocalita(),payload.getCap(), payload.getComune(),cliente);

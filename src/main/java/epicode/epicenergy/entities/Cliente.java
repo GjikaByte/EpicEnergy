@@ -1,32 +1,49 @@
 package epicode.epicenergy.entities;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Setter;
+
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 public class Cliente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @GeneratedValue
+    @Setter(AccessLevel.NONE)
+    private UUID id_cliente;
+    @Column(name="ragione_sociale", nullable = false)
     private String ragioneSociale;
+    @Column(name="parita_iva", nullable = false)
     private String partitaIva;
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
     private LocalDate dataInserimento;
+    @Column(nullable = false)
     private LocalDate dataUltimoContatto;
+    @Column(nullable = false)
     private Double fatturatoAnnuale;
+    @Column(nullable = false)
     private String pec;
+    @Column(nullable = false)
     private String telefono;
+    @Column(nullable = false)
     private String emailContatto;
+    @Column(nullable = false)
     private String nomeContatto;
+    @Column(nullable = false)
     private String cognomeContatto;
+    @Column(nullable = false)
     private String telefonoContatto;
+    @Column(nullable = false)
     private String logoAziendale;
 
     public Cliente(){}
 
-    public Long getId(){return id;}
+    public UUID getIdCliente(){return id_cliente;}
     public String getRagioneSociale(){return ragioneSociale;}
     public String getPartitaIva(){return partitaIva;}
     public String getEmail(){return email;}
