@@ -1,9 +1,6 @@
 package epicode.epicenergy.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Setter;
 
@@ -43,10 +40,13 @@ public class Cliente {
     private String telefonoContatto;
     @Column(nullable = false)
     private String logoAziendale;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TipoCliente tipoCliente;
 
     public Cliente(){}
 
-public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataInserimento, LocalDate dataUltimoContatto, Double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto, String logoAziendale) {
+public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataInserimento, LocalDate dataUltimoContatto, Double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto,TipoCliente tipoCliente) {
     this.ragioneSociale = ragioneSociale;
     this.partitaIva = partitaIva;
     this.email = email;
@@ -59,7 +59,7 @@ public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate
     this.nomeContatto = nomeContatto;
     this.cognomeContatto = cognomeContatto;
     this.telefonoContatto = telefonoContatto;
-    this.logoAziendale = logoAziendale;
+    this.tipoCliente = tipoCliente;
 }
 
     public UUID getIdCliente(){return id_cliente;}
@@ -112,6 +112,10 @@ public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate
 
     public void setTelefonoContatto(String telefonoContatto){this.telefonoContatto = telefonoContatto;}
 
-    public String getLogoAziendale(){return logoAziendale;}
+    public void setLogoAziendale(String logoAziendale){this.logoAziendale = logoAziendale;}
 
-        public void setLogoAziendale(String logoAziendale){this.logoAziendale = logoAziendale;}}
+    public void setTipoCliente(TipoCliente tipoCliente){this.tipoCliente = tipoCliente;}
+
+    public TipoCliente getTipoCliente(){return tipoCliente;}
+
+}
