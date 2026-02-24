@@ -7,6 +7,7 @@ import epicode.epicenergy.services.ClienteService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/clienti")
@@ -46,7 +47,7 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public Cliente getClienteById(@PathVariable Long id){
+    public Cliente getClienteById(@PathVariable UUID id){
 
         Cliente cliente = clienteService.trovaPerId(id);
 
@@ -58,7 +59,7 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    public void eliminaCliente(@PathVariable Long id){
+    public void eliminaCliente(@PathVariable UUID id){
         clienteService.eliminaCliente(id);
     }
 }

@@ -5,6 +5,7 @@ import epicode.epicenergy.repositories.ClienteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ClienteService {
@@ -22,11 +23,11 @@ public class ClienteService {
         return clienteRepository.findAll();
     }
 
-    public Cliente trovaPerId(Long id){
+    public Cliente trovaPerId(UUID id){
         return clienteRepository.findById(id).orElse(null);
     }
 
-    public void eliminaCliente(Long id){
+    public void eliminaCliente(UUID id){
         clienteRepository.deleteById(id);
     }
 

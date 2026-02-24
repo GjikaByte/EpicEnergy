@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -21,14 +22,16 @@ public class Fattura {
     private UUID idFattura;
 
     private LocalDate data;
-    private Double importo;
+    private BigDecimal importo;
+
+    @Column(nullable = false, unique = true)
     private Long numeroFattura;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
-   public Fattura(LocalDate data, Double importo, Long numeroFattura, Cliente cliente) {
+public Fattura(LocalDate data, BigDecimal importo, Long numeroFattura, Cliente cliente) {
     this.data = data;
     this.importo = importo;
     this.numeroFattura = numeroFattura;
