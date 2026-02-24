@@ -2,18 +2,11 @@ package epicode.epicenergy.controllers;
 
 import epicode.epicenergy.DTOs.ClienteDTO;
 import epicode.epicenergy.entities.Cliente;
-import epicode.epicenergy.exceptions.ValidationException;
+import epicode.epicenergy.exceptions.NotFoundException;
 import epicode.epicenergy.services.ClienteService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/clienti")
@@ -21,63 +14,51 @@ public class ClienteController {
 
     private final ClienteService clienteService;
 
-    @Autowired
     public ClienteController(ClienteService clienteService){
         this.clienteService = clienteService;
     }
 
-
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Cliente salvaCliente(@RequestBody @Validated ClienteDTO payload, BindingResult validationResult){
-        if(validationResult.hasErrors()){
-            List<String> errorsList = validationResult.getFieldErrors()
-                    .stream()
-                    .map(fieldError -> fieldError.getDefaultMessage())
-                    .toList();
-            throw new ValidationException(errorsList);
-        } else {
-            return this.clienteService.salvaCliente(payload);
-        }
+    public Cliente salvaCliente(@RequestBody ClienteDTO clienteDTO){
+
+        Cliente cliente = new Cliente();
+
+        cliente.setRagioneSociale(clienteDTO.ragioneSociale);
+        cliente.setPartitaIva(clienteDTO.partitaIva);
+        cliente.setEmail(clienteDTO.email);
+        cliente.setDataInserimento(clienteDTO.dataInserimento);
+        cliente.setDataUltimoContatto(clienteDTO.dataUltimoContatto);
+        cliente.setFatturatoAnnuale(clienteDTO.fatturatoAnnuale);
+        cliente.setPec(clienteDTO.pec);
+        cliente.setTelefono(clienteDTO.telefono);
+        cliente.setEmailContatto(clienteDTO.emailContatto);
+        cliente.setNomeContatto(clienteDTO.nomeContatto);
+        cliente.setCognomeContatto(clienteDTO.cognomeContatto);
+        cliente.setTelefonoContatto(clienteDTO.telefonoContatto);
+        cliente.setLogoAziendale(clienteDTO.logoAziendale);
+
+        return clienteService.salvaCliente(cliente);
     }
 
     @GetMapping
-    public Page<Cliente> findAll( @RequestParam(defaultValue = "0")int page,
-                                    @RequestParam(defaultValue = "10")int size,
-                                    @RequestParam(defaultValue = "nomeContatto")String orderBy,
-                                    @RequestParam(defaultValue = "asc")String sortCriteria) {
-        return clienteService.findAll(page, size, orderBy, sortCriteria);
+    public List<Cliente> getClienti(){
+        return clienteService.trovaTutti();
     }
 
-    @GetMapping("/{clienteId}")
-    public Cliente getClienteId(@PathVariable UUID clienteId) {
-        return clienteService.findById(clienteId);
-    }
+    @GetMapping("/{id}")
+    public Cliente getClienteById(@PathVariable Long id){
 
-    @PutMapping("/{clienteId}")
-    public Cliente updateCliente(@PathVariable UUID clienteId, @RequestBody @Validated ClienteDTO payload,BindingResult validationResult) {
-        if(validationResult.hasErrors()){
-            List<String> errorsList = validationResult.getFieldErrors()
-                    .stream()
-                    .map(fieldError -> fieldError.getDefaultMessage())
-                    .toList();
-            throw new ValidationException(errorsList);
-        } else {
-            return this.clienteService.findByIdAndUpdate(clienteId, payload);
+        Cliente cliente = clienteService.trovaPerId(id);
+
+        if(cliente == null){
+            throw new NotFoundException("Cliente non trovato");
         }
+
+        return cliente;
     }
 
-    @DeleteMapping("/{clientiId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteDipendente(@PathVariable UUID clienteId) {
-        this.clienteService.findByIdAndDelete(clienteId);
-    }
-
-    @PatchMapping("/{clienteId}/logo")
-    public Cliente uploadImage(@RequestParam("profile_picture") MultipartFile file, @PathVariable UUID clienteId){
-
-        Cliente url=this.clienteService.uploadLogo(clienteId,file);
-
-        return url;
+    @DeleteMapping("/{id}")
+    public void eliminaCliente(@PathVariable Long id){
+        clienteService.eliminaCliente(id);
     }
 }

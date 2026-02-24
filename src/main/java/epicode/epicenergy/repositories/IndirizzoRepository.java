@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,4 +19,6 @@ public interface IndirizzoRepository extends JpaRepository<Indirizzo, UUID> {
             @Param("civico") int civico,
             @Param("localita") String localita
     );
-}
+
+    @Query("SELECT i FROM Indirizzo i WHERE i.cliente.id_cliente= :id_cliente")
+    List<Indirizzo> findIndirizziByClienteId(@Param("id_cliente") UUID id_cliente);}

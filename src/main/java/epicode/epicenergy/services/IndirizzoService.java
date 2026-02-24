@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -47,8 +48,13 @@ public class IndirizzoService {
 
 
         Indirizzo newIndirizzo = new Indirizzo(payload.getVia(),payload.getCivico(),payload.getLocalita(),payload.getCap(), payload.getComune(),cliente);
+        List<Indirizzo> indirizziCliente = indirizzoRepository.findIndirizziByClienteId(cliente.getIdCliente());
+
+        if (indirizziCliente.size() > 2) {
+            throw new BadRequestException("Massimo 2 indirizzi consentiti");
+        }
         Indirizzo savedIndirizzo = this.indirizzoRepository.save(newIndirizzo);
-        log.info("L'indirizzo invia " + newIndirizzo.getVia() + " a " + newIndirizzo.getLocalita() + " è stato salvato correttamente con id:" + newIndirizzo.getId_indirizzo());
+        log.info("L'indirizzo in via " + newIndirizzo.getVia() + " a " + newIndirizzo.getLocalita() + " è stato salvato correttamente con id:" + newIndirizzo.getId_indirizzo());
         return savedIndirizzo;
     }
 
@@ -71,5 +77,21 @@ public class IndirizzoService {
         this.indirizzoRepository.delete(found);
         log.info("L'indirizzo con id " + indirizzoId + " è stato eliminato correttamente");
 
+    }
+
+    public Indirizzo findByIdAndUpdate(UUID dipendenteId, IndirizzoDTO payload) {
+        Indirizzo found = this.findById(dipendenteId);
+
+        found.setVia(payload.getVia());
+        found.setCivico(payload.getCivico());
+        found.setLocalita(payload.getLocalita());
+        found.setCap(payload.getCap());
+        found.setComune(payload.getComune());
+
+        Indirizzo modifiedIndirizzo = this.indirizzoRepository.save(found);
+
+        log.info("L'indirizzo con id " + modifiedIndirizzo.getId_indirizzo() + " è stato modificato correttamente");
+
+        return modifiedIndirizzo;
     }
 }

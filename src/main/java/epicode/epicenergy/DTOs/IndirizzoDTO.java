@@ -24,8 +24,7 @@ public class IndirizzoDTO {
     @NotBlank(message = "Il comune e' un campo obbligatorio")
     @Size(min = 2, max = 30, message = "Il comune deve essere tra i 2 e i 30 caratteri")
     private String comune;
-    @NotBlank(message = "L'Id del cliente e' un campo obbligatorio")
-    @Size(min = 2, max = 30, message = "L'Id del cliente deve essere tra i 2 e i 30 caratteri")
+    @NotNull(message = "Il numero civico e' un campo obbligatorio")
     private UUID clienteId;
 
 
