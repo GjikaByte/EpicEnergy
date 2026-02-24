@@ -3,7 +3,10 @@ package epicode.epicenergy.services;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import epicode.epicenergy.DTOs.IndirizzoDTO;
 import epicode.epicenergy.DTOs.UtenteDTO;
+import epicode.epicenergy.entities.Cliente;
+import epicode.epicenergy.entities.Indirizzo;
 import epicode.epicenergy.entities.Utente;
 import epicode.epicenergy.exceptions.BadRequestException;
 import epicode.epicenergy.exceptions.NotFoundException;
@@ -15,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,14 +32,21 @@ public class UtentiService {
 
     private final UtentiRepository utentiRepository;
     private final Cloudinary cloudinaryUploader;
+    private final PasswordEncoder bcrypt;
 
     @Autowired
-    public UtentiService(UtentiRepository utentiRepository,Cloudinary cloudinaryUploader) {
+    public UtentiService(UtentiRepository utentiRepository,Cloudinary cloudinaryUploader,PasswordEncoder bcrypt) {
         this.utentiRepository = utentiRepository;
         this.cloudinaryUploader = cloudinaryUploader;
+        this.bcrypt = bcrypt;
     }
 
-
+    public Utente save(UtenteDTO payload) {
+        Utente newUtente = new Utente(payload.username(), payload.nome(), payload.cognome(), payload.email(), bcrypt.encode(payload.password()));
+        Utente savedUtente = this.utentiRepository.save(newUtente);
+        log.info("L'utente " + newUtente.getUsername() + "è stato salvato correttamente con id:" + newUtente.getId());
+        return savedUtente;
+    }
 
     // FIND BY EMAIL
     public Utente findByEmail (String email) {

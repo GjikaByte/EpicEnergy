@@ -1,7 +1,10 @@
 package epicode.epicenergy.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -14,21 +17,20 @@ import java.util.UUID;
 @Table(name = "fatture")
 public class Fattura {
     @Id
-    @GeneratedValue
-    @Setter(AccessLevel.NONE)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idFattura;
+
     private LocalDate data;
     private Double importo;
     private Long numeroFattura;
-    @Enumerated(EnumType.STRING)
-    private StatoFattura statoFattura;
-    @ManyToOne
-    private Cliente clienteId;
 
-    public Fattura(LocalDate data, Double importo, Long numeroFattura, StatoFattura statoFattura, Cliente clienteId) {
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
+
+   public Fattura(LocalDate data, Double importo, Long numeroFattura, Cliente cliente) {
     this.data = data;
     this.importo = importo;
     this.numeroFattura = numeroFattura;
-    this.statoFattura = statoFattura;
-    this.clienteId = clienteId;
+    this.cliente = cliente;
 }}

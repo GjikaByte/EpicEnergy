@@ -8,24 +8,25 @@ import lombok.ToString;
 
 import java.util.UUID;
 
-@NoArgsConstructor
 @Entity
 @Getter
 @Setter
 @ToString
-@Table(name = "stato_fatture")
-public class StatoFattura {
+@NoArgsConstructor
+@Table(name = "utenti_ruolo")
+public class UtenteRuolo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID idStatoFattura;
+    private UUID idUtenteRuolo;
     @ManyToOne
     @JoinColumn(name = "id_stato")
-    private Stato stato;
+    private Utente utente;
     @ManyToOne
-    @JoinColumn(name = "id_fattura")
-    private Fattura fattura;
+    @JoinColumn(name = "id_ruolo")
+    private Ruolo ruolo;
 
-    public StatoFattura(Stato stato, Fattura fattura) {
-    this.stato = stato;
-    this.fattura = fattura;
+public UtenteRuolo(Utente utente, Ruolo ruolo) {
+    this.utente = utente;
+    this.ruolo = ruolo;
+
 }}
