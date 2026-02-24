@@ -14,7 +14,7 @@ public class FatturaService {
     this.fatturaRepository = fatturaRepository;}
 
     public Fattura save(FatturaDTO dto) {
-        Fattura nuovaFattura = new Fattura(dto.data(),dto.importo(),dto.numeroFattura(), dto.statoFattura(),dto.clienteId());
+        Fattura nuovaFattura = new Fattura(dto.data(),dto.importo(),dto.numeroFattura(),dto.clienteId());
         if (fatturaRepository.existsByNumeroFattura(dto.numeroFattura())){
             throw new IllegalArgumentException("Fattura già esistente");
         }
