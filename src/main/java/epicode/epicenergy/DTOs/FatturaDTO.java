@@ -1,5 +1,6 @@
 package epicode.epicenergy.DTOs;
 
+import epicode.epicenergy.entities.Cliente;
 import epicode.epicenergy.entities.StatoFattura;
 
 import java.time.LocalDate;
