@@ -7,6 +7,7 @@ import epicode.epicenergy.DTOs.IndirizzoDTO;
 import epicode.epicenergy.DTOs.UtenteDTO;
 import epicode.epicenergy.entities.Cliente;
 import epicode.epicenergy.entities.Indirizzo;
+import epicode.epicenergy.entities.Role;
 import epicode.epicenergy.entities.Utente;
 import epicode.epicenergy.exceptions.BadRequestException;
 import epicode.epicenergy.exceptions.NotFoundException;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -90,7 +92,10 @@ public class UtentiService {
         return this.utentiRepository.findAll(pageable);
     }
 
-
+    // FIND ALL NO PAGINATION
+    public List<Utente> findAllNoPagination() {
+        return this.utentiRepository.findAll();
+    }
 
     //MODIFICA UTENTE
     public Utente findByIdAndUpdate(UUID userId, UtenteDTO payload){
@@ -143,13 +148,26 @@ public class UtentiService {
         }
     }
 
+    public Utente saveAdmin(UtenteDTO payload) {
 
+        this.utentiRepository.findByEmail(payload.email()).ifPresent(utente -> {
+            throw new BadRequestException("L'email " + utente.getEmail() + " è già in uso!");
+        });
 
+        Utente newUtente = new Utente(
+                payload.username(),
+                payload.nome(),
+                payload.cognome(),
+                payload.email(),
+                bcrypt.encode(payload.password())
+        );
 
+        newUtente.setRole(Role.ADMIN);
 
+        Utente savedUtente = this.utentiRepository.save(newUtente);
 
+        log.info("L'Admin con id "+savedUtente.getId()+" è stato salvato con successo!");
 
-
-
-
+        return savedUtente;
+    }
 }
