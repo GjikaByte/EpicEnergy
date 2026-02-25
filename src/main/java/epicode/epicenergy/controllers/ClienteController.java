@@ -59,7 +59,7 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    public void eliminaCliente(@PathVariable UUID id){
-        clienteService.eliminaCliente(id);
+    public void inattivaCliente(@PathVariable UUID id){
+        clienteService.inattivaCliente(id);
     }
 }
