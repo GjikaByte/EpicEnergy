@@ -52,7 +52,9 @@ public class ClienteService {
                 payload.nomeContatto(),
                 payload.cognomeContatto(),
                 payload.telefonoContatto(),
-                payload.tipoCliente()
+                payload.tipoCliente(),
+                payload.indirizzoSedeOperativa(),
+                payload.indirizzoSedeLegale()
                 );
         newCliente.setLogoAziendale("https://ui-avatars.com/api/?name="+payload.nomeContatto()+"+"+payload.cognomeContatto());
         Cliente savedCliente = clienteRepository.save(newCliente);
@@ -82,7 +84,6 @@ public class ClienteService {
         found.setCognomeContatto(payload.cognomeContatto());
         found.setTelefonoContatto(payload.telefonoContatto());
         found.setTipoCliente(payload.tipoCliente());
-
         found.setLogoAziendale(
                 "https://ui-avatars.com/api/?name="
                         + payload.nomeContatto() + "+"
@@ -156,7 +157,7 @@ public class ClienteService {
 
     public void inattivaCliente(UUID id){
         Cliente found = clienteRepository.findById(id).orElseThrow();
-        found.setStatocliente(StatoCliente.INATTIVO);
+        found.setStatoCliente(StatoCliente.INATTIVO);
     }
 
 

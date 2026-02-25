@@ -46,8 +46,10 @@ public class Cliente {
     private String telefonoContatto;
     @Column(nullable = false)
     private String logoAziendale;
+    @Column (nullable = false)
+    private TipoCliente tipoCliente;
     @Column(nullable = false)
-    private StatoCliente statocliente;
+    private StatoCliente statoCliente;
 
     @ManyToOne
     @JoinColumn(name = "id_indirizzo_sede_operativa", nullable = false)
@@ -57,7 +59,7 @@ public class Cliente {
     @JoinColumn(name = "id_indirizzo_sede_legale", nullable = false)
     private IndirizzoSedeLegale indirizzoSedeLegale;
 
-    public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataInserimento, LocalDate dataUltimoContatto, Double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto, String logoAziendale, StatoCliente statocliente, IndirizzoSedeOperativa indirizzoSedeOperativa, IndirizzoSedeLegale indirizzoSedeLegale) {
+    public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataInserimento, LocalDate dataUltimoContatto, Double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto, TipoCliente tipoCliente, IndirizzoSedeOperativa indirizzoSedeOperativa, IndirizzoSedeLegale indirizzoSedeLegale) {
         this.ragioneSociale = ragioneSociale;
         this.partitaIva = partitaIva;
         this.email = email;
@@ -70,8 +72,8 @@ public class Cliente {
         this.nomeContatto = nomeContatto;
         this.cognomeContatto = cognomeContatto;
         this.telefonoContatto = telefonoContatto;
-        this.logoAziendale = logoAziendale;
-        this.statocliente = statocliente;
+        this.tipoCliente = tipoCliente;
+        this.statoCliente = StatoCliente.ATTIVO;
         this.indirizzoSedeOperativa = indirizzoSedeOperativa;
         this.indirizzoSedeLegale = indirizzoSedeLegale;
     }

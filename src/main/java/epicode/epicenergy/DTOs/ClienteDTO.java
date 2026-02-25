@@ -1,5 +1,7 @@
 package epicode.epicenergy.DTOs;
 
+import epicode.epicenergy.entities.IndirizzoSedeLegale;
+import epicode.epicenergy.entities.IndirizzoSedeOperativa;
 import epicode.epicenergy.entities.TipoCliente;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -37,6 +39,10 @@ public record ClienteDTO (
     @Size(max = 20, message = "Il numero di telefono non può superare i 20 caratteri")
     String telefonoContatto,
     @NotNull(message="è obbligatorio specificare il tipo di cliente")
-    TipoCliente tipoCliente
+    TipoCliente tipoCliente,
+    @NotNull(message="è obbligatorio specificare l'indirizzo della sede operativa")
+    IndirizzoSedeOperativa indirizzoSedeOperativa,
+    @NotNull(message="è obbligatorio specificare l'indirizzo della sede legale")
+    IndirizzoSedeLegale indirizzoSedeLegale
 ){
 }
