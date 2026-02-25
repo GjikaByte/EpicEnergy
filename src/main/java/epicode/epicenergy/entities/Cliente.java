@@ -49,7 +49,15 @@ public class Cliente {
     @Column(nullable = false)
     private StatoCliente statocliente;
 
-    public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataInserimento, LocalDate dataUltimoContatto, Double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto, String logoAziendale) {
+    @ManyToOne
+    @JoinColumn(name = "id_indirizzo_sede_operativa", nullable = false)
+    private IndirizzoSedeOperativa indirizzoSedeOperativa;
+
+    @ManyToOne
+    @JoinColumn(name = "id_indirizzo_sede_legale", nullable = false)
+    private IndirizzoSedeLegale indirizzoSedeLegale;
+
+    public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataInserimento, LocalDate dataUltimoContatto, Double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto, String logoAziendale, StatoCliente statocliente, IndirizzoSedeOperativa indirizzoSedeOperativa, IndirizzoSedeLegale indirizzoSedeLegale) {
         this.ragioneSociale = ragioneSociale;
         this.partitaIva = partitaIva;
         this.email = email;
@@ -63,6 +71,8 @@ public class Cliente {
         this.cognomeContatto = cognomeContatto;
         this.telefonoContatto = telefonoContatto;
         this.logoAziendale = logoAziendale;
-        this.statocliente = StatoCliente.ATTIVO;
+        this.statocliente = statocliente;
+        this.indirizzoSedeOperativa = indirizzoSedeOperativa;
+        this.indirizzoSedeLegale = indirizzoSedeLegale;
     }
 }

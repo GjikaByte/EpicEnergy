@@ -3,10 +3,7 @@ package epicode.epicenergy.services;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import epicode.epicenergy.DTOs.IndirizzoDTO;
 import epicode.epicenergy.DTOs.UtenteDTO;
-import epicode.epicenergy.entities.Cliente;
-import epicode.epicenergy.entities.Indirizzo;
 import epicode.epicenergy.entities.Role;
 import epicode.epicenergy.entities.Utente;
 import epicode.epicenergy.exceptions.BadRequestException;

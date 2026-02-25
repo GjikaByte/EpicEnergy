@@ -12,13 +12,13 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "indirizzi")
-public class Indirizzo
+@Table(name = "indirizzi_sede_operativa")
+public class IndirizzoSedeOperativa
 {
     @Id
     @GeneratedValue
     @Setter(AccessLevel.NONE)
-    private UUID id_indirizzo;
+    private UUID id_indirizzo_sede_operativa;
     @Column(nullable = false)
     private String via;
     @Column( nullable = false)
@@ -28,16 +28,11 @@ public class Indirizzo
     private long cap;
     private String comune;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
-
-    public Indirizzo(String via, int civico, String localita, long cap, String comune, Cliente cliente) {
+    public IndirizzoSedeOperativa(String via, int civico, String localita, long cap, String comune) {
         this.via = via;
         this.civico = civico;
         this.localita = localita;
         this.cap = cap;
         this.comune = comune;
-        this.cliente = cliente;
     }
 }
