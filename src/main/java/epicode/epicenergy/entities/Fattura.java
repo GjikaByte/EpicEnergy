@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -31,9 +32,17 @@ public class Fattura {
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
-public Fattura(LocalDate data, BigDecimal importo, Long numeroFattura, Cliente cliente) {
-    this.data = data;
-    this.importo = importo;
-    this.numeroFattura = numeroFattura;
-    this.cliente = cliente;
-}}
+    @ManyToOne
+    @JoinColumn(name = "id_stato")
+    private Stato stato;
+
+
+
+    public Fattura(LocalDate data, BigDecimal importo, Long numeroFattura, Cliente cliente,Stato stato) {
+        this.data = data;
+        this.importo = importo;
+        this.numeroFattura = numeroFattura;
+        this.cliente = cliente;
+        this.stato = stato;
+    }
+}

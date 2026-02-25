@@ -26,6 +26,10 @@ public class Utente {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @ManyToOne
+    @JoinColumn(name="id_ruolo")
+    private Ruolo ruolo;
+
     public Utente(String username, String nome, String cognome, String email, String password) {
         this.username = username;
         this.nome = nome;

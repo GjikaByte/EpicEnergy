@@ -48,7 +48,7 @@ public class IndirizzoSedeLegaleService {
                 .orElseThrow(() -> new NotFoundException(payload.getClienteId()));
 
 
-        IndirizzoSedeLegale newIndirizzoSedeLegale = new IndirizzoSedeLegale(payload.getVia(),payload.getCivico(),payload.getLocalita(),payload.getCap(), payload.getComune());
+        IndirizzoSedeLegale newIndirizzoSedeLegale = new IndirizzoSedeLegale(payload.getVia(),payload.getCivico(),payload.getLocalita(),payload.getCap(),payload.getComune());
 
         IndirizzoSedeLegale savedIndirizzoSedeLegale = this.indirizzoSedeLegaleRepository.save(newIndirizzoSedeLegale);
         log.info("L'indirizzo in via " + newIndirizzoSedeLegale.getVia() + " a " + newIndirizzoSedeLegale.getLocalita() + " è stato salvato correttamente con id:" + newIndirizzoSedeLegale.getId_indirizzo_sede_legale());

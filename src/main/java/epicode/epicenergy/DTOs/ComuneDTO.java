@@ -1,5 +1,6 @@
 package epicode.epicenergy.DTOs;
 
+import epicode.epicenergy.entities.Provincia;
 import jakarta.validation.constraints.NotBlank;
 
 public record ComuneDTO(
@@ -10,6 +11,6 @@ public record ComuneDTO(
         @NotBlank(message = "La denominazione è obbligatoria")
         String denominazione,
         @NotBlank(message = "La provincia è obbligatoria")
-        String provincia
+        Provincia provincia
 ) {
 }

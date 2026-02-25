@@ -18,10 +18,13 @@ public class Comune {
     private String codiceProvincia;
     private String codiceComune;
     private String denominazione;
-    private String provincia;
+
+    @ManyToOne
+    @JoinColumn(name="id_provincia")
+    private Provincia provincia;
 
 
-    public Comune(String codiceProvincia, String codiceComune, String denominazione, String provincia) {
+    public Comune(String codiceProvincia, String codiceComune, String denominazione, Provincia provincia) {
         this.codiceProvincia = codiceProvincia;
         this.codiceComune = codiceComune;
         this.denominazione = denominazione;

@@ -19,7 +19,7 @@ public class ComuneStartUpRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        comuneService.importa();
         provinceService.importa();
+        comuneService.importa();
     }
 }

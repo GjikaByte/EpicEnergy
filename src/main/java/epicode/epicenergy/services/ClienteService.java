@@ -3,6 +3,7 @@ package epicode.epicenergy.services;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import epicode.epicenergy.DTOs.ClienteDTO;
+import epicode.epicenergy.Specifications.ClienteSpecifications;
 import epicode.epicenergy.entities.Cliente;
 import epicode.epicenergy.entities.Utente;
 import epicode.epicenergy.exceptions.BadRequestException;
@@ -15,12 +16,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
 import javax.swing.text.html.Option;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -159,6 +162,30 @@ public class ClienteService {
         Cliente found = clienteRepository.findById(id).orElseThrow();
         found.setStatoCliente(StatoCliente.INATTIVO);
     }
+
+
+//    FILTRO CLIENTI
+    public Page<Cliente> filtraClienti(
+            String ragioneSociale,
+            Double fatturatoMin,
+            LocalDate dataInserimento,
+            LocalDate dataUltimoContatto,
+            int page,
+            int size
+    ) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Specification<Cliente> spec = Specification
+                .where(ClienteSpecifications.ragioneSociale(ragioneSociale))
+                .and(ClienteSpecifications.fatturatoMaggioreDi(fatturatoMin))
+                .and(ClienteSpecifications.inseritoDopo(dataInserimento))
+                .and(ClienteSpecifications.ultimoContattoPrima(dataUltimoContatto));
+
+        return clienteRepository.findAll(spec, pageable);
+    }
+
+
 
 
 }

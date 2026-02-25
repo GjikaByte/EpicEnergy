@@ -1,5 +1,6 @@
 package epicode.epicenergy.DTOs;
 
+import epicode.epicenergy.entities.Comune;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -23,7 +24,7 @@ public class IndirizzoDTO {
     private long cap;
     @NotBlank(message = "Il comune e' un campo obbligatorio")
     @Size(min = 2, max = 30, message = "Il comune deve essere tra i 2 e i 30 caratteri")
-    private String comune;
+    private Comune comune;
     @NotNull(message = "Il numero civico e' un campo obbligatorio")
     private UUID clienteId;
 

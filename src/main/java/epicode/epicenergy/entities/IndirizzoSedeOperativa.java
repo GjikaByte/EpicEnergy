@@ -26,9 +26,13 @@ public class IndirizzoSedeOperativa
     @Column( nullable = false)
     private String localita;
     private long cap;
-    private String comune;
 
-    public IndirizzoSedeOperativa(String via, int civico, String localita, long cap, String comune) {
+    @ManyToOne
+    @JoinColumn(name="id_comune")
+    private Comune comune;
+
+
+    public IndirizzoSedeOperativa(String via, int civico, String localita, long cap, Comune comune) {
         this.via = via;
         this.civico = civico;
         this.localita = localita;

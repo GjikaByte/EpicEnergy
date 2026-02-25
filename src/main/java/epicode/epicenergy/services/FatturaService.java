@@ -28,7 +28,7 @@ public class FatturaService {
 
         Cliente cliente = clienteRepository.findById(dto.clienteId()).orElseThrow(() -> new IllegalArgumentException("Cliente non trovato"));
 
-        Fattura nuovaFattura = new Fattura(dto.data(), dto.importo(), dto.numeroFattura(), cliente);
+        Fattura nuovaFattura = new Fattura(dto.data(), dto.importo(), dto.numeroFattura(),cliente,dto.stato());
 
         return fatturaRepository.save(nuovaFattura);
     }

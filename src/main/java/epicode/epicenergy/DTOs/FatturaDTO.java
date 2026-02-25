@@ -1,5 +1,6 @@
 package epicode.epicenergy.DTOs;
 
+import epicode.epicenergy.entities.Stato;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
@@ -23,6 +24,9 @@ public record FatturaDTO(
 
         @NotNull
         @Positive
-        UUID clienteId
+        UUID clienteId,
+
+        @NotNull
+        Stato stato
 ) {
 }
