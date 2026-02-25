@@ -52,9 +52,6 @@ public class UtentiService {
         return this.utentiRepository.findByEmail(email).orElseThrow(()-> new NotFoundException("L'utente con email " + email + " non è stato trovato!"));
     }
 
-
-
-
     //SAVE UTENTE
     public Utente saveUtente(UtenteDTO payload){
     //CONTROLLO EMAIL
@@ -124,7 +121,7 @@ public class UtentiService {
     }
 
 
-    //    UPLOAD AVATAR DIPENDENTE
+    //    UPLOAD AVATAR
     public Utente uploadAvatar(UUID utenteId, MultipartFile file){
 
         Utente found = this.findById(utenteId);
