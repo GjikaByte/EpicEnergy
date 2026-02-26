@@ -16,7 +16,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("admin")
-@PreAuthorize("hasAnyAuthority('ADMIN')")
 public class AdminController {
 
     private final UtentiService utenteService;
@@ -34,8 +33,8 @@ public class AdminController {
     }
 
     // GET http://localhost:3001/admin
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public List<Utente> findAll() {
         return this.utenteService.findAllNoPagination();
     }

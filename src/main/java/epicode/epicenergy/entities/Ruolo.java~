@@ -22,5 +22,4 @@ public class Ruolo {
 
     public Ruolo(String ruolo) {
     this.ruolo = ruolo;
-}
-}
+}}
