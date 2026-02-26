@@ -27,6 +27,6 @@ public record FatturaDTO(
         UUID clienteId,
 
         @NotNull
-        Stato stato
+        UUID statoId
 ) {
 }
