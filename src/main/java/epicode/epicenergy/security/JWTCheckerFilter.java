@@ -39,7 +39,6 @@ public class JWTCheckerFilter extends OncePerRequestFilter {
 
         String accessToken = authHeader.replace("Bearer ", "");
         jwtTools.verifyToken(accessToken);
-        filterChain.doFilter(request, response);
 
 //        AUTORIZZAZIONE
         UUID utenteId = jwtTools.extractIdFromToken(accessToken);
