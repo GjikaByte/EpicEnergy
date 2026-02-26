@@ -7,6 +7,7 @@ import epicode.epicenergy.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ public class ClienteController {
 
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_UTENTE')")
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente salvaCliente(@RequestBody @Validated ClienteDTO payload, BindingResult validationResult){
         if(validationResult.hasErrors()){
@@ -55,6 +57,7 @@ public class ClienteController {
     }
 
     @PutMapping("/{clienteId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public Cliente updateCliente(@PathVariable UUID clienteId, @RequestBody @Validated ClienteDTO payload,BindingResult validationResult) {
         if(validationResult.hasErrors()){
             List<String> errorsList = validationResult.getFieldErrors()
@@ -68,12 +71,14 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{clientiId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDipendente(@PathVariable UUID clienteId) {
         this.clienteService.findByIdAndDelete(clienteId);
     }
 
     @PatchMapping("/{clienteId}/logo")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public Cliente uploadImage(@RequestParam("profile_picture") MultipartFile file, @PathVariable UUID clienteId){
 
         Cliente url=this.clienteService.uploadLogo(clienteId,file);

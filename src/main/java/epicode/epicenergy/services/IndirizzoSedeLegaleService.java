@@ -44,8 +44,8 @@ public class IndirizzoSedeLegaleService {
                     );
                 });
 
-        Cliente cliente = clienteRepository.findById(payload.getClienteId())
-                .orElseThrow(() -> new NotFoundException(payload.getClienteId()));
+//        Cliente cliente = clienteRepository.findById(payload.getClienteId())
+//                .orElseThrow(() -> new NotFoundException(payload.getClienteId()));
 
 
         IndirizzoSedeLegale newIndirizzoSedeLegale = new IndirizzoSedeLegale(payload.getVia(),payload.getCivico(),payload.getLocalita(),payload.getCap(),payload.getComune());

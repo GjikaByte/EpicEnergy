@@ -22,11 +22,8 @@ public class IndirizzoDTO {
     private String localita;
     @NotNull(message = "Il cap e' un campo obbligatorio")
     private long cap;
-    @NotBlank(message = "Il comune e' un campo obbligatorio")
-    @Size(min = 2, max = 30, message = "Il comune deve essere tra i 2 e i 30 caratteri")
+    @NotNull(message = "Il comune e' un campo obbligatorio")
     private Comune comune;
-    @NotNull(message = "Il numero civico e' un campo obbligatorio")
-    private UUID clienteId;
 
 
 }

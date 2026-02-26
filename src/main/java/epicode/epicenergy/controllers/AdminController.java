@@ -27,6 +27,7 @@ public class AdminController {
 
     // 1. POST http://localhost:3001/admin (+ Payload)
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Utente createUser(@RequestBody @Valid UtenteDTO payload) {
         return this.utenteService.save(payload);
@@ -41,6 +42,7 @@ public class AdminController {
 
     // 3. GET http://localhost:3001/admin/{utenteId}
     @GetMapping("/{utenteId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public Utente findById(@PathVariable UUID utenteId) {
         return this.utenteService.findById(utenteId);
     }
@@ -48,6 +50,7 @@ public class AdminController {
 
     // 4. DELETE http://localhost:3001/admin/{utenteId}
     @DeleteMapping("/{utenteId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findByIdAndDelete(@PathVariable UUID utenteId) {
         this.utenteService.findByIdAndDelete(utenteId);
@@ -55,6 +58,7 @@ public class AdminController {
 
     // 5. PUT http://localhost:3001/admin/{utenteId}
     @PutMapping("/{utenteId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public Utente findByIdAndUpdate(@PathVariable UUID utenteId, @RequestBody UtenteDTO payload) {
         return this.utenteService.findByIdAndUpdate(utenteId, payload);
     }

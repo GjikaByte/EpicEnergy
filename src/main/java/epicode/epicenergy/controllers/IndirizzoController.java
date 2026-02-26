@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -75,6 +76,7 @@ public class IndirizzoController {
 
     // 4.1 DELETE http://localhost:3001/indirizziSedeLegale/{indirizzoId}
     @DeleteMapping("/indirizziSedeLegale/{indirizzoId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findByIdAndDeleteLegale(@PathVariable UUID indirizzoId) {
         this.indirizzoSedeLegaleService.findByIdAndDelete(indirizzoId);
@@ -82,6 +84,7 @@ public class IndirizzoController {
 
     // 4.2 DELETE http://localhost:3001/indirizzi/{indirizzoId}
     @DeleteMapping("/indirizziSedeOperativa/{indirizzoId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findByIdAndDeleteOperativa(@PathVariable UUID indirizzoId) {
         this.indirizzoSedeOperativaService.findByIdAndDelete(indirizzoId);

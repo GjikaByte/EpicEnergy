@@ -67,7 +67,7 @@ public class AuthControllerUtente {
         }
     }
 
-    @PostMapping("ruoli")
+    @PostMapping("/ruoli")
     @ResponseStatus(HttpStatus.CREATED)
     public Ruolo salvaRuolo(@RequestBody @Validated RuoloDTO payload, BindingResult validationResult){
         if(validationResult.hasErrors()){
@@ -81,7 +81,7 @@ public class AuthControllerUtente {
         }
     }
 
-    @DeleteMapping("ruoli/{ruoloId}")
+    @DeleteMapping("/ruoli/{ruoloId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRuolo(@PathVariable UUID ruoloId) {
         this.ruoloService.findByIdAndDelete(ruoloId);
