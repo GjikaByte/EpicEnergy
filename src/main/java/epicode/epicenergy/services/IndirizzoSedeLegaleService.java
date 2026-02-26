@@ -3,11 +3,13 @@ package epicode.epicenergy.services;
 
 import epicode.epicenergy.DTOs.IndirizzoDTO;
 import epicode.epicenergy.entities.Cliente;
+import epicode.epicenergy.entities.Comune;
 import epicode.epicenergy.entities.IndirizzoSedeLegale;
 import epicode.epicenergy.entities.IndirizzoSedeOperativa;
 import epicode.epicenergy.exceptions.BadRequestException;
 import epicode.epicenergy.exceptions.NotFoundException;
 import epicode.epicenergy.repositories.ClienteRepository;
+import epicode.epicenergy.repositories.ComuneRepository;
 import epicode.epicenergy.repositories.IndirizzoSedeLegaleRepository;
 import epicode.epicenergy.repositories.IndirizzoSedeOperativaRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +27,12 @@ import java.util.UUID;
 public class IndirizzoSedeLegaleService {
 
     private final IndirizzoSedeLegaleRepository indirizzoSedeLegaleRepository;
-    private final ClienteRepository clienteRepository;
+    private final ComuneRepository comuneRepository;
 
     @Autowired
-    public IndirizzoSedeLegaleService(IndirizzoSedeLegaleRepository indirizzoSedeLegaleRepository, ClienteRepository clienteRepository) {
+    public IndirizzoSedeLegaleService(IndirizzoSedeLegaleRepository indirizzoSedeLegaleRepository, ComuneRepository comuneRepository) {
         this.indirizzoSedeLegaleRepository = indirizzoSedeLegaleRepository;
-        this.clienteRepository = clienteRepository;
+        this.comuneRepository = comuneRepository;
     }
 
     public IndirizzoSedeLegale save(IndirizzoDTO payload) {
@@ -40,18 +42,25 @@ public class IndirizzoSedeLegaleService {
                 .ifPresent(indirizzoSedeLegale -> {
                     throw new BadRequestException(
                             "L'indirizzo in via " + indirizzoSedeLegale.getVia() +
-                                    " con civico " + indirizzoSedeLegale.getCivico() + " in localita' " + indirizzoSedeLegale.getLocalita() + " esiste già!"
+                                    " con civico " + indirizzoSedeLegale.getCivico() +
+                                    " in localita' " + indirizzoSedeLegale.getLocalita() + " esiste già!"
                     );
                 });
 
-//        Cliente cliente = clienteRepository.findById(payload.getClienteId())
-//                .orElseThrow(() -> new NotFoundException(payload.getClienteId()));
+        Comune comune = comuneRepository.findById(payload.getComuneId())
+                .orElseThrow(() -> new NotFoundException("Comune non trovato con id: " + payload.getComuneId()));
 
-
-        IndirizzoSedeLegale newIndirizzoSedeLegale = new IndirizzoSedeLegale(payload.getVia(),payload.getCivico(),payload.getLocalita(),payload.getCap(),payload.getComune());
+        IndirizzoSedeLegale newIndirizzoSedeLegale = new IndirizzoSedeLegale(
+                payload.getVia(),
+                payload.getCivico(),
+                payload.getLocalita(),
+                payload.getCap(),
+                comune
+        );
 
         IndirizzoSedeLegale savedIndirizzoSedeLegale = this.indirizzoSedeLegaleRepository.save(newIndirizzoSedeLegale);
-        log.info("L'indirizzo in via " + newIndirizzoSedeLegale.getVia() + " a " + newIndirizzoSedeLegale.getLocalita() + " è stato salvato correttamente con id:" + newIndirizzoSedeLegale.getId_indirizzo_sede_legale());
+        log.info("L'indirizzo in via " + newIndirizzoSedeLegale.getVia() + " a " + newIndirizzoSedeLegale.getLocalita() +
+                " è stato salvato correttamente con id:" + newIndirizzoSedeLegale.getId_indirizzo_sede_legale());
         return savedIndirizzoSedeLegale;
     }
 
@@ -79,11 +88,14 @@ public class IndirizzoSedeLegaleService {
     public IndirizzoSedeLegale findByIdAndUpdate(UUID dipendenteId, IndirizzoDTO payload) {
         IndirizzoSedeLegale found = this.findById(dipendenteId);
 
+        Comune comune = comuneRepository.findById(payload.getComuneId())
+                .orElseThrow(() -> new NotFoundException("Comune non trovato con id: " + payload.getComuneId()));
+
         found.setVia(payload.getVia());
         found.setCivico(payload.getCivico());
         found.setLocalita(payload.getLocalita());
         found.setCap(payload.getCap());
-        found.setComune(payload.getComune());
+        found.setComune(comune);
 
         IndirizzoSedeLegale modifiedIndirizzoSedeLegale = this.indirizzoSedeLegaleRepository.save(found);
 

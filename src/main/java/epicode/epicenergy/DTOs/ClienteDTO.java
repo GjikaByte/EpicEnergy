@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public record ClienteDTO (
     @NotBlank(message = "La ragione sociale è obbligatoria")
@@ -41,8 +42,8 @@ public record ClienteDTO (
     @NotNull(message="è obbligatorio specificare il tipo di cliente")
     TipoCliente tipoCliente,
     @NotNull(message="è obbligatorio specificare l'indirizzo della sede operativa")
-    IndirizzoSedeOperativa indirizzoSedeOperativa,
+    UUID indirizzoSedeOperativa,
     @NotNull(message="è obbligatorio specificare l'indirizzo della sede legale")
-    IndirizzoSedeLegale indirizzoSedeLegale
+    UUID indirizzoSedeLegale
 ){
 }

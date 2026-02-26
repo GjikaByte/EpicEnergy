@@ -23,7 +23,7 @@ public class IndirizzoDTO {
     @NotNull(message = "Il cap e' un campo obbligatorio")
     private long cap;
     @NotNull(message = "Il comune e' un campo obbligatorio")
-    private Comune comune;
+    private String comuneId;;
 
 
 }

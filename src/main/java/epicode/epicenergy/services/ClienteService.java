@@ -4,12 +4,12 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import epicode.epicenergy.DTOs.ClienteDTO;
 import epicode.epicenergy.Specifications.ClienteSpecifications;
-import epicode.epicenergy.entities.Cliente;
-import epicode.epicenergy.entities.Utente;
+import epicode.epicenergy.entities.*;
 import epicode.epicenergy.exceptions.BadRequestException;
 import epicode.epicenergy.exceptions.NotFoundException;
-import epicode.epicenergy.entities.StatoCliente;
 import epicode.epicenergy.repositories.ClienteRepository;
+import epicode.epicenergy.repositories.IndirizzoSedeLegaleRepository;
+import epicode.epicenergy.repositories.IndirizzoSedeOperativaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,15 +34,31 @@ import java.util.UUID;
 public class ClienteService {
     private final ClienteRepository clienteRepository;
     private final Cloudinary cloudinaryUploader;
+    private final IndirizzoSedeLegaleRepository indirizzoSedeLegaleRepository;
+    private final IndirizzoSedeOperativaRepository indirizzoSedeOperativaRepository;
 
     @Autowired
-    public ClienteService(ClienteRepository clienteRepository, Cloudinary cloudinaryUploader) {
+    public ClienteService(ClienteRepository clienteRepository, Cloudinary cloudinaryUploader, IndirizzoSedeLegaleRepository indirizzoSedeLegaleRepository, IndirizzoSedeOperativaRepository indirizzoSedeOperativaRepository) {
         this.clienteRepository = clienteRepository;
         this.cloudinaryUploader = cloudinaryUploader;
+        this.indirizzoSedeLegaleRepository = indirizzoSedeLegaleRepository;
+        this.indirizzoSedeOperativaRepository = indirizzoSedeOperativaRepository;
     }
 
 
+
+
     public Cliente salvaCliente(ClienteDTO payload){
+
+        IndirizzoSedeLegale sedeLegale = indirizzoSedeLegaleRepository
+                .findById(payload.indirizzoSedeLegale())
+                .orElseThrow(() -> new NotFoundException("Sede legale non trovata"));
+
+        IndirizzoSedeOperativa sedeOperativa = indirizzoSedeOperativaRepository
+                .findById(payload.indirizzoSedeOperativa())
+                .orElseThrow(() -> new NotFoundException("Sede operativa non trovata"));
+
+
         Cliente newCliente = new Cliente(payload.ragioneSociale(),
                 payload.partitaIva(),
                 payload.email(),
@@ -56,8 +72,8 @@ public class ClienteService {
                 payload.cognomeContatto(),
                 payload.telefonoContatto(),
                 payload.tipoCliente(),
-                payload.indirizzoSedeOperativa(),
-                payload.indirizzoSedeLegale()
+                sedeOperativa,
+                sedeLegale
                 );
         newCliente.setLogoAziendale("https://ui-avatars.com/api/?name="+payload.nomeContatto()+"+"+payload.cognomeContatto());
         Cliente savedCliente = clienteRepository.save(newCliente);
@@ -92,6 +108,13 @@ public class ClienteService {
                         + payload.nomeContatto() + "+"
                         + payload.cognomeContatto()
         );
+        found.setIndirizzoSedeLegale(indirizzoSedeLegaleRepository
+                .findById(payload.indirizzoSedeLegale())
+                .orElseThrow(() -> new NotFoundException("Sede legale non trovata")));
+
+        found.setIndirizzoSedeOperativa(indirizzoSedeOperativaRepository
+                .findById(payload.indirizzoSedeOperativa())
+                .orElseThrow(() -> new NotFoundException("Sede operativa non trovata")));
 
         Cliente modifiedCliente = clienteRepository.save(found);
 
