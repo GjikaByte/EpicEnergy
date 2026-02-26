@@ -4,7 +4,7 @@ package epicode.epicenergy.services;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import epicode.epicenergy.DTOs.UtenteDTO;
-import epicode.epicenergy.entities.Role;
+import epicode.epicenergy.entities.Ruolo;
 import epicode.epicenergy.entities.Utente;
 import epicode.epicenergy.exceptions.BadRequestException;
 import epicode.epicenergy.exceptions.NotFoundException;
@@ -32,39 +32,44 @@ public class UtentiService {
     private final UtentiRepository utentiRepository;
     private final Cloudinary cloudinaryUploader;
     private final PasswordEncoder bcrypt;
+    private final RuoloService ruoloService;
 
     @Autowired
-    public UtentiService(UtentiRepository utentiRepository,Cloudinary cloudinaryUploader,PasswordEncoder bcrypt) {
+    public UtentiService(UtentiRepository utentiRepository,Cloudinary cloudinaryUploader,PasswordEncoder bcrypt, RuoloService ruoloService) {
         this.utentiRepository = utentiRepository;
         this.cloudinaryUploader = cloudinaryUploader;
         this.bcrypt = bcrypt;
+        this.ruoloService = ruoloService;
     }
 
     public Utente save(UtenteDTO payload) {
-        Utente newUtente = new Utente(payload.username(), payload.nome(), payload.cognome(), payload.email(), bcrypt.encode(payload.password()));
+
+        this.utentiRepository.findByEmail(payload.email()).ifPresent(utente -> {
+            throw new BadRequestException("L'email " + utente.getEmail() + " è già in uso!");
+        });
+
+        Ruolo found = ruoloService.findByRole("UTENTE");
+
+        Utente newUtente = new Utente(
+                payload.username(),
+                payload.nome(),
+                payload.cognome(),
+                payload.email(),
+                bcrypt.encode(payload.password()),
+                found
+        );
+
+
         Utente savedUtente = this.utentiRepository.save(newUtente);
-        log.info("L'utente " + newUtente.getUsername() + "è stato salvato correttamente con id:" + newUtente.getId());
+
+        log.info("L'Admin con id "+savedUtente.getId()+" è stato salvato con successo!");
+
         return savedUtente;
     }
 
     // FIND BY EMAIL
     public Utente findByEmail (String email) {
         return this.utentiRepository.findByEmail(email).orElseThrow(()-> new NotFoundException("L'utente con email " + email + " non è stato trovato!"));
-    }
-
-    //SAVE UTENTE
-    public Utente saveUtente(UtenteDTO payload){
-    //CONTROLLO EMAIL
-        this.utentiRepository.findByEmail(payload.email()).ifPresent(utente -> {
-            throw new BadRequestException("L'email "+ utente.getEmail() + " è già registrata!");});
-    //NUOVO UTENTE
-        Utente newUtente = new Utente(payload.username(),payload.nome(),payload.cognome(),payload.email(), payload.password());
-        newUtente.setAvatar("https://ui-avatars.com/api/?name="+payload.nome()+"+"+payload.cognome());
-    //SALVO UTENTE
-        Utente savedUtente = this.utentiRepository.save(newUtente);
-    //LOG
-        log.info("Utente"+newUtente.getNome()+" "+newUtente.getCognome() +" salvato con successo: ");
-        return savedUtente;
     }
 
 
@@ -148,15 +153,17 @@ public class UtentiService {
             throw new BadRequestException("L'email " + utente.getEmail() + " è già in uso!");
         });
 
+        Ruolo found = ruoloService.findByRole("ADMIN");
+
         Utente newUtente = new Utente(
                 payload.username(),
                 payload.nome(),
                 payload.cognome(),
                 payload.email(),
-                bcrypt.encode(payload.password())
+                bcrypt.encode(payload.password()),
+                found
         );
 
-        newUtente.setRole(Role.ADMIN);
 
         Utente savedUtente = this.utentiRepository.save(newUtente);
 

@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("admin")
+@PreAuthorize("hasAnyAuthority('ADMIN')")
 public class AdminController {
 
     private final UtentiService utenteService;
@@ -32,6 +34,7 @@ public class AdminController {
     }
 
     // GET http://localhost:3001/admin
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping
     public List<Utente> findAll() {
         return this.utenteService.findAllNoPagination();
