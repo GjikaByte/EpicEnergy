@@ -164,6 +164,7 @@ public class UtentiService {
                 bcrypt.encode(payload.password()),
                 found
         );
+        newUtente.setAvatar("https://ui-avatars.com/api/?name="+payload.nome()+"+"+payload.cognome());
 
 
         Utente savedUtente = this.utentiRepository.save(newUtente);
