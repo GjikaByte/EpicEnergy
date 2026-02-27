@@ -3,8 +3,6 @@ import { ChevronRight, Layers, Zap } from "lucide-react";
 import Login from "./Login";
 
 function App() {
-  const [data, setData] = useState<{ status: string } | null>(null);
-  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState<boolean>(false);
   const [showSignup, setSignup] = useState<boolean>(false);
 
@@ -15,8 +13,8 @@ function App() {
   };
   interface RegisterFormData {
     username: string;
-    name: string;
-    surname: string;
+    nome: string;
+    cognome: string;
     email: string;
     password: string;
   }
@@ -27,8 +25,8 @@ function App() {
 
   const [formData, setFormData] = useState<RegisterFormData>({
     username: "",
-    name: "",
-    surname: "",
+    nome: "",
+    cognome: "",
     email: "",
     password: "",
   });
@@ -40,6 +38,7 @@ function App() {
       ...prev,
       [name as keyof RegisterFormData]: value,
     }));
+    console.log(formData);
   };
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,6 +53,11 @@ function App() {
       });
 
       if (!response.ok) {
+        const errorBody = await response.json();
+        console.error(
+          "Errore dal backend:",
+          JSON.stringify(errorBody, null, 2),
+        );
         throw new Error("Errore nella registrazione");
       }
 
@@ -121,8 +125,8 @@ function App() {
                     className="form-control"
                     placeholder="Name"
                     required
-                    name="name"
-                    value={formData.name}
+                    name="nome"
+                    value={formData.nome}
                     onChange={handleChange}
                   />
                 </div>
@@ -133,8 +137,8 @@ function App() {
                     className="form-control"
                     placeholder="Surname"
                     required
-                    name="surname"
-                    value={formData.surname}
+                    name="cognome"
+                    value={formData.cognome}
                     onChange={handleChange}
                   />
                 </div>
