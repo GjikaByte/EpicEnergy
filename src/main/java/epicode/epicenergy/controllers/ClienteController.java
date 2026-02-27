@@ -6,6 +6,7 @@ import epicode.epicenergy.exceptions.ValidationException;
 import epicode.epicenergy.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,8 +49,12 @@ public class ClienteController {
     public Page<Cliente> findAll( @RequestParam(defaultValue = "0")int page,
                                     @RequestParam(defaultValue = "10")int size,
                                     @RequestParam(defaultValue = "nomeContatto")String orderBy,
-                                    @RequestParam(defaultValue = "asc")String sortCriteria) {
-        return clienteService.findAll(page, size, orderBy, sortCriteria);
+                                    @RequestParam(defaultValue = "asc")String sortCriteria,
+                                    @RequestParam(required = false) String ragioneSociale,
+                                    @RequestParam(required = false) Double fatturatoMaggioreDi,
+                                    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inseritoDopo,
+                                    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ultimoContattoPrima) {
+        return clienteService.findAll(page, size, orderBy, sortCriteria,ragioneSociale,fatturatoMaggioreDi,inseritoDopo,ultimoContattoPrima);
     }
 
     @GetMapping("/{clienteId}")

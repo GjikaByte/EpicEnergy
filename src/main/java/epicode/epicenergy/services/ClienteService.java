@@ -124,28 +124,32 @@ public class ClienteService {
     }
 
     //FIND ALL
-    public Page<Cliente> findAll(int page, int size, String orderBy, String sortCriteria) {
-            if (size > 100 || size <= 0) size = 10;
-            if (page < 0) page = 0;
-            List<String> tipoOrdinamento = List.of(
-                    "nomeContatto",
-                    "fatturatoAnnuale",
-                    "dataInserimento",
-                    "dataUltimoContatto"
-            );
+    public Page<Cliente> findAll(int page, int size, String orderBy, String sortCriteria,
+                                 String ragioneSociale,
+                                 Double fatturatoMaggioreDi,
+                                 LocalDate inseritoDopo,
+                                 LocalDate ultimoContattoPrima) {
 
-            if (!tipoOrdinamento.contains(orderBy)) {
-                orderBy = "nomeContatto";
-            }
+        if (size > 100 || size <= 0) size = 10;
+        if (page < 0) page = 0;
 
-            Sort sort = sortCriteria.equalsIgnoreCase("desc")
-                    ? Sort.by(orderBy).descending()
-                    : Sort.by(orderBy).ascending();
+        List<String> tipoOrdinamento = List.of(
+                "ragioneSociale", "fatturatoAnnuale", "dataInserimento", "dataUltimoContatto"
+        );
+        if (!tipoOrdinamento.contains(orderBy)) orderBy = "nomeContatto";
 
-            Pageable pageable = PageRequest.of(page, size, sort);
+        Sort sort = sortCriteria.equalsIgnoreCase("desc")
+                ? Sort.by(orderBy).descending()
+                : Sort.by(orderBy).ascending();
 
-            return clienteRepository.findAll(pageable);
-        }
+        Specification<Cliente> spec = Specification
+                .where(ClienteSpecifications.ragioneSociale(ragioneSociale))
+                .and(ClienteSpecifications.fatturatoMaggioreDi(fatturatoMaggioreDi))
+                .and(ClienteSpecifications.inseritoDopo(inseritoDopo))
+                .and(ClienteSpecifications.ultimoContattoPrima(ultimoContattoPrima));
+
+        return clienteRepository.findAll(spec, PageRequest.of(page, size, sort));
+    }
 
     //FIND BY ID
     public Cliente findById(UUID clienteId){
