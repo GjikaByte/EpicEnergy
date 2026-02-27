@@ -30,7 +30,7 @@ public class RuoloService {
         return savedRuolo;
     }
     public void findByIdAndDelete(UUID ruoloId){
-        this.findByIdAndDelete(ruoloId);
+        ruoloRepository.deleteById(ruoloId);
     }
 
     public Ruolo findByRole(String ruolo){
