@@ -27,7 +27,7 @@ public class StatoService {
         return savedStato;
     }
     public void findByIdAndDelete(UUID statoId){
-        this.findByIdAndDelete(statoId);
+        statoRepository.deleteById(statoId);
     }
 
     public Stato findByStato(String stato){

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/stato")
+@RequestMapping("/stati")
 public class StatoController {
 
     private final StatoService statoService;
@@ -47,8 +47,8 @@ public class StatoController {
 
     @DeleteMapping("/{statoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteRuolo(@PathVariable UUID ruoloId) {
-        this.statoService.findByIdAndDelete(ruoloId);
+    public void deleteStato(@PathVariable UUID statoId) {
+        this.statoService.findByIdAndDelete(statoId);
     }
 
 }
