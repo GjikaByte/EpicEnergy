@@ -99,7 +99,7 @@ function App() {
 
         <div
           className="form-container position-relative"
-          style={{ minHeight: "100px", width: "100%", maxWidth: "500px" }}>
+          style={{ minHeight: "400px", width: "100%", maxWidth: "500px" }}>
           {showForm && <Login />}
 
           {showSignup && (
