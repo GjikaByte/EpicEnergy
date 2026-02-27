@@ -70,10 +70,10 @@ public class ClienteController {
         }
     }
 
-    @DeleteMapping("/{clientiId}")
+    @DeleteMapping("/{clienteId}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteDipendente(@PathVariable UUID clienteId) {
+    public void deleteCliente(@PathVariable UUID clienteId) {
         this.clienteService.findByIdAndDelete(clienteId);
     }
 
