@@ -65,7 +65,7 @@ function App() {
 
       const data: RegisterResponse = await response.json();
 
-      localStorage.setItem("accessToken",data.accessToken);
+      localStorage.setItem("accessToken", data.accessToken);
 
       console.log("Registrazione completata");
       navigate("/dashboard");
@@ -99,7 +99,7 @@ function App() {
 
         <div
           className="form-container position-relative"
-          style={{ minHeight: "400px", width: "100%", maxWidth: "500px" }}>
+          style={{ minHeight: "100px", width: "100%", maxWidth: "500px" }}>
           {showForm && <Login />}
 
           {showSignup && (
