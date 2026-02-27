@@ -22,7 +22,7 @@ function App() {
   }
 
   interface RegisterResponse {
-    token: string;
+    accessToken: string;
   }
 
   const [formData, setFormData] = useState<RegisterFormData>({
@@ -65,7 +65,7 @@ function App() {
 
       const data: RegisterResponse = await response.json();
 
-      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("accessToken",data.accessToken);
 
       console.log("Registrazione completata");
       navigate("/dashboard");

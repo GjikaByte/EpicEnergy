@@ -7,7 +7,7 @@ interface LoginFormData {
 }
 
 interface LoginResponse {
-  token: string;
+  accessToken: string;
 }
 
 function Login() {
@@ -44,7 +44,7 @@ function Login() {
 
       const data: LoginResponse = await response.json();
 
-      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("accessToken",data.accessToken);
       navigate("/dashboard");
 
       console.log("Login effettuato");
