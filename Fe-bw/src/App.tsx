@@ -1,16 +1,77 @@
 import { useState, useEffect } from "react";
 import { ChevronRight, Layers, Zap } from "lucide-react";
+import Login from "./Login";
+import { useNavigate } from "react-router-dom";
 
 function App() {
-  const [data, setData] = useState<{ status: string } | null>(null);
-  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState<boolean>(false);
   const [showSignup, setSignup] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleClick = (
     setState: (updater: (prev: boolean) => boolean) => void,
   ): void => {
     setState((prev) => !prev);
+  };
+  interface RegisterFormData {
+    username: string;
+    nome: string;
+    cognome: string;
+    email: string;
+    password: string;
+  }
+
+  interface RegisterResponse {
+    token: string;
+  }
+
+  const [formData, setFormData] = useState<RegisterFormData>({
+    username: "",
+    nome: "",
+    cognome: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name as keyof RegisterFormData]: value,
+    }));
+    console.log(formData);
+  };
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:3001/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.json();
+        console.error(
+          "Errore dal backend:",
+          JSON.stringify(errorBody, null, 2),
+        );
+        throw new Error("Errore nella registrazione");
+      }
+
+      const data: RegisterResponse = await response.json();
+
+      localStorage.setItem("authToken", data.token);
+
+      console.log("Registrazione completata");
+      navigate("/dashboard");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -35,58 +96,26 @@ function App() {
           Epic<span className="text-gradient">Energy</span>{" "}
           <Zap size={50}></Zap>
         </h1>
-        
-        <div className="form-container position-relative" style={{ minHeight: '400px', width: '100%', maxWidth: '500px' }}>
-          {showForm && (
-            <form className="position-absolute top-0 start-50 translate-middle-x w-100" style={{ zIndex: 10 }}>
-              <div className="mb-3">
-                <label htmlFor="exampleInputEmail1" className="form-label fw-bold">
-                  Email address
-                </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                />
-                <div id="emailHelp" className="form-text">
-                  We'll never share your email with anyone else.
-                </div>
-              </div>
-              <div className="mb-3">
-                <label htmlFor="exampleInputPassword1" className="form-label fw-bold">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="exampleInputPassword1"
-                />
-              </div>
-              <div className="mb-3 form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="exampleCheck1"
-                />
-                <label className="form-check-label" htmlFor="exampleCheck1">
-                  Our privacy policy
-                </label>
-              </div>
-              <button type="submit" className="btn btn-primary">
-                Submit
-              </button>
-            </form>
-          )}
-          
+
+        <div
+          className="form-container position-relative"
+          style={{ minHeight: "400px", width: "100%", maxWidth: "500px" }}>
+          {showForm && <Login />}
+
           {showSignup && (
-            <form className="position-absolute top-0 start-50 translate-middle-x w-100" style={{ zIndex: 10 }}>
+            <form
+              className="position-absolute top-0 start-50 translate-middle-x w-100"
+              style={{ zIndex: 10 }}
+              onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label className="form-label fw-bold">Username</label>
                 <input
                   type="text"
                   className="form-control"
                   placeholder="Username"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -99,6 +128,9 @@ function App() {
                     className="form-control"
                     placeholder="Name"
                     required
+                    name="nome"
+                    value={formData.nome}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="col-md-6 mb-3">
@@ -108,6 +140,9 @@ function App() {
                     className="form-control"
                     placeholder="Surname"
                     required
+                    name="cognome"
+                    value={formData.cognome}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -117,8 +152,11 @@ function App() {
                   <input
                     type="email"
                     className="form-control"
+                    name="email"
                     placeholder="Giangiorgio@pupo.com"
                     required
+                    value={formData.email}
+                    onChange={handleChange}
                   />
                 </div>
                 <div id="emailHelp" className="form-text">
@@ -131,6 +169,9 @@ function App() {
                   type="password"
                   className="form-control"
                   placeholder="Password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
                 />
               </div>
               <div className="mb-3 form-check">
@@ -150,9 +191,7 @@ function App() {
           )}
         </div>
 
-
-  
-        <div className="d-flex gap-4 mt-4" style={{ minHeight: '50px' }}>
+        <div className="d-flex gap-4 mt-4" style={{ minHeight: "50px" }}>
           {!showForm && !showSignup && (
             <>
               <button
@@ -169,7 +208,7 @@ function App() {
           )}
         </div>
 
-        <div className="mt-4" style={{ minHeight: '50px' }}>
+        <div className="mt-4" style={{ minHeight: "50px" }}>
           {showForm && (
             <button
               className="btn btn-danger btn-large"
