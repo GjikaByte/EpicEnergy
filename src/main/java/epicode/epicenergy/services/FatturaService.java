@@ -32,13 +32,14 @@ public class FatturaService {
         Cliente cliente = clienteRepository.findById(dto.clienteId())
                 .orElseThrow(() -> new IllegalArgumentException("Cliente non trovato"));
 
-        Stato stato = statoRepository.findById(dto.statoId())
-                .orElseThrow(() -> new IllegalArgumentException("Stato non trovato"));
+        Stato stato = statoRepository.findByStato(dto.stato())
+                .orElseThrow(() -> new IllegalArgumentException("Stato non trovato: " + dto.stato()));
 
         Fattura nuovaFattura = new Fattura(dto.data(), dto.importo(), dto.numeroFattura(), cliente, stato);
 
         return fatturaRepository.save(nuovaFattura);
     }
+
 
     public List<Fattura> findAll() {
         return this.fatturaRepository.findAll();

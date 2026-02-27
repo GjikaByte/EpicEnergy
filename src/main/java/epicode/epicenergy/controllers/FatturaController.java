@@ -3,7 +3,10 @@ package epicode.epicenergy.controllers;
 import epicode.epicenergy.DTOs.FatturaDTO;
 import epicode.epicenergy.entities.Fattura;
 import epicode.epicenergy.exceptions.NotFoundException;
+import epicode.epicenergy.exceptions.ValidationException;
 import epicode.epicenergy.services.FatturaService;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +23,14 @@ public class FatturaController {
     }
 
     @PostMapping
-    public Fattura salvaFattura(@RequestBody FatturaDTO fatturaDTO) {
+    public Fattura salvaFattura(@RequestBody @Validated FatturaDTO fatturaDTO, BindingResult validationResult) {
+        if (validationResult.hasErrors()) {
+            List<String> errorsList = validationResult.getFieldErrors()
+                    .stream()
+                    .map(fieldError -> fieldError.getDefaultMessage())
+                    .toList();
+            throw new ValidationException(errorsList);
+        }
         return fatturaService.save(fatturaDTO);
     }
 

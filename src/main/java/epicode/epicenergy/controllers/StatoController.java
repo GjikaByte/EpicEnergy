@@ -5,6 +5,7 @@ import epicode.epicenergy.DTOs.StatoDTO;
 import epicode.epicenergy.entities.Ruolo;
 import epicode.epicenergy.entities.Stato;
 import epicode.epicenergy.exceptions.ValidationException;
+import epicode.epicenergy.repositories.StatoRepository;
 import epicode.epicenergy.services.RuoloService;
 import epicode.epicenergy.services.StatoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,12 @@ import java.util.UUID;
 public class StatoController {
 
     private final StatoService statoService;
+    private final StatoRepository statoRepository;
 
     @Autowired
-    public StatoController(StatoService statoService){
+    public StatoController(StatoService statoService,StatoRepository statoRepository) {
         this.statoService = statoService;
+        this.statoRepository = statoRepository;
     }
 
 
@@ -44,8 +47,8 @@ public class StatoController {
 
     @DeleteMapping("/{statoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteStato(@PathVariable UUID statoId) {
-        this.statoService.findByIdAndDelete(statoId);
+    public void deleteRuolo(@PathVariable UUID ruoloId) {
+        this.statoService.findByIdAndDelete(ruoloId);
     }
 
 }
