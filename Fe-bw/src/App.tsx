@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { ChevronRight, Layers, Zap } from "lucide-react";
 import Login from "./Login";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const [showForm, setShowForm] = useState<boolean>(false);
   const [showSignup, setSignup] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleClick = (
     setState: (updater: (prev: boolean) => boolean) => void,
@@ -66,6 +68,7 @@ function App() {
       localStorage.setItem("authToken", data.token);
 
       console.log("Registrazione completata");
+      navigate("/dashboard");
     } catch (error) {
       console.error(error);
     }

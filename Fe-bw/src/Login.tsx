@@ -1,4 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface LoginFormData {
   email: string;
@@ -14,6 +15,7 @@ function Login() {
     email: "",
     password: "",
   });
+  const navigate = useNavigate()
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -43,6 +45,7 @@ function Login() {
       const data: LoginResponse = await response.json();
 
       localStorage.setItem("authToken", data.token);
+      navigate("/dashboard");
 
       console.log("Login effettuato");
     } catch (error) {
